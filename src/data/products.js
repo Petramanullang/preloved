@@ -63,7 +63,7 @@ export const products = [
     id: "vr-shinecon",
     name: "VR Shinecon",
     price: 50000,
-    condition: "Bagus, 80%",
+    condition: "Bagus, 95%",
     description: "Headset VR untuk smartphone, cocok untuk hiburan ringan.",
     longDescription:
       "VR Shinecon masih berfungsi dengan baik untuk menonton video atau bermain konten VR sederhana. Cocok untuk pengguna yang ingin mencoba pengalaman VR dengan budget terjangkau.",
@@ -80,7 +80,7 @@ export const products = [
     id: "gamepad-machenike-g3-v2",
     name: "Gamepad Machenike G3 V2",
     price: 350000,
-    condition: "Bagus, 85%",
+    condition: "Sangat Bagus, 100%",
     description: "Gamepad cocok untuk PC dan Android, bisa nego.",
     longDescription:
       "Gamepad Machenike G3 V2 masih berfungsi baik dan nyaman dipakai untuk bermain game. Cocok untuk kebutuhan gaming ringan sampai menengah.",
@@ -102,7 +102,7 @@ export const products = [
     id: "casio-fx-991ex",
     name: "Casio FX-991EX",
     price: 100000,
-    condition: "Bagus, 90%",
+    condition: "Sangat Bagus, 95%",
     description: "Calculator scientific, masih normal dan siap pakai.",
     longDescription:
       "Casio FX-991EX adalah kalkulator scientific yang cocok untuk pelajar maupun kerja hitung cepat. Unit masih berfungsi dengan baik dan siap digunakan.",
