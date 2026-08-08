@@ -130,6 +130,7 @@ export const products = [
       { label: "Merek", value: "JETE" },
       { label: "Model", value: "SM3" },
       { label: "Status", value: "Unit only" },
+      { label: "Koneksi", value: "Bluetooth" },
       { label: "Catatan", value: "Tanpa aksesoris tambahan" },
     ],
     soldOut: false,
