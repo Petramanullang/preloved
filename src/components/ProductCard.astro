@@ -1,0 +1,213 @@
+---
+import { formatRupiah, buildWaLink, buildProductWaMessage } from "../utils/helpers.js";
+import { shopConfig } from "../data/config.js";
+
+const { product } = Astro.props;
+const waLink = buildWaLink(shopConfig.whatsappNumber, buildProductWaMessage(product.name));
+---
+
+<article class:list={["card", { "card--sold": product.soldOut }]}>
+  <a href={`/produk/${product.id}`} class="card__link-wrap" aria-label={`Lihat detail ${product.name}`}>
+    <div class="card__photo-wrap">
+      <img
+        src={product.image}
+        alt={product.name}
+        class="card__photo"
+        loading="lazy"
+        width="400"
+        height="400"
+      />
+      <span class="card__tag" aria-hidden="true"></span>
+      {
+        product.soldOut && (
+          <div class="card__sold-badge">
+            <span>Sold out</span>
+          </div>
+        )
+      }
+    </div>
+
+    <div class="card__body">
+      <p class="card__condition">{product.condition}</p>
+      <h3 class="card__name">{product.name}</h3>
+      <p class="card__desc">{product.description}</p>
+      <p class="card__price">{formatRupiah(product.price)}</p>
+    </div>
+  </a>
+
+  <div class="card__actions">
+    {
+      product.soldOut ? (
+        <button class="card__cta card__cta--disabled" disabled>
+          Sudah terjual
+        </button>
+      ) : (
+        <a class="card__cta" href={waLink} target="_blank" rel="noopener noreferrer">
+          Tanya via WhatsApp
+        </a>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .card {
+    background: var(--paper-raised);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px -12px rgba(28, 27, 25, 0.18);
+  }
+
+  .card--sold {
+    opacity: 0.72;
+  }
+
+  .card--sold:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .card__link-wrap {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .card__actions {
+    padding: 0 1.1rem 1.2rem;
+  }
+
+  .card__photo-wrap {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: var(--line);
+    overflow: hidden;
+  }
+
+  .card__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .card--sold .card__photo {
+    filter: grayscale(60%);
+  }
+
+  /* Signature: sudut label gantung ala barang preloved fisik */
+  .card__tag {
+    position: absolute;
+    top: 10px;
+    left: -6px;
+    width: 34px;
+    height: 18px;
+    background: var(--tan);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 12px 100%, 0 55%);
+  }
+
+  .card__sold-badge {
+    position: absolute;
+    inset: 0;
+    background: rgba(28, 27, 25, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .card__sold-badge span {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.05rem;
+    color: #fff;
+    background: var(--sold);
+    padding: 0.35rem 1.1rem;
+    border-radius: 2px;
+    transform: rotate(-6deg);
+    letter-spacing: 0.02em;
+  }
+
+  .card__body {
+    padding: 1rem 1.1rem 0.6rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex: 1;
+  }
+
+  .card__condition {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--tan-deep);
+    font-weight: 600;
+  }
+
+  .card__name {
+    margin: 0.1rem 0 0.15rem;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.1rem;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+
+  .card__desc {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    flex: 1;
+  }
+
+  .card__price {
+    margin: 0;
+    font-family: var(--font-ui);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .card__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    width: 100%;
+    padding: 0.65rem 1rem;
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 500;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .card__cta:hover {
+    background: var(--tan-deep);
+  }
+
+  .card__cta--disabled {
+    background: var(--line);
+    color: var(--ink-soft);
+    cursor: not-allowed;
+  }
+
+  .card__cta--disabled:hover {
+    background: var(--line);
+  }
+</style>

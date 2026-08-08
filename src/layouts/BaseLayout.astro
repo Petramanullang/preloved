@@ -1,0 +1,39 @@
+---
+import "../styles/global.css";
+import { shopConfig } from "../data/config.js";
+
+const { title = shopConfig.shopName, description = shopConfig.tagline } = Astro.props;
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="site-bar">
+      <a href="/" class="site-bar__name">{shopConfig.shopName}</a>
+    </div>
+    <slot />
+  </body>
+</html>
+
+<style>
+  .site-bar {
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .site-bar__name {
+    font-family: var(--font-ui);
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+  }
+</style>

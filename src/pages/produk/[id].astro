@@ -1,0 +1,263 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { products } from "../../data/products.js";
+import { shopConfig } from "../../data/config.js";
+import { formatRupiah, buildWaLink, buildProductWaMessage } from "../../utils/helpers.js";
+
+export function getStaticPaths() {
+  return products.map((product) => ({
+    params: { id: product.id },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+const waLink = buildWaLink(shopConfig.whatsappNumber, buildProductWaMessage(product.name));
+const photos = [product.image, ...(product.gallery ?? [])];
+const longDescription = product.longDescription || product.description;
+---
+
+<BaseLayout title={`${product.name} — ${shopConfig.shopName}`} description={product.description}>
+  <main class="detail">
+    <div class="detail__inner">
+      <a href="/" class="detail__back">&larr; Semua barang</a>
+
+      <div class="detail__grid">
+        <div class="detail__gallery">
+          <div class="detail__photo-wrap">
+            <img src={photos[0]} alt={product.name} class="detail__photo" />
+            {
+              product.soldOut && (
+                <div class="detail__sold-badge">
+                  <span>Sold out</span>
+                </div>
+              )
+            }
+          </div>
+
+          {
+            photos.length > 1 && (
+              <div class="detail__thumbs">
+                {photos.map((photo) => (
+                  <img src={photo} alt="" class="detail__thumb" />
+                ))}
+              </div>
+            )
+          }
+        </div>
+
+        <div class="detail__info">
+          <p class="detail__condition">{product.condition}</p>
+          <h1 class="detail__name">{product.name}</h1>
+          <p class="detail__price">{formatRupiah(product.price)}</p>
+
+          <p class="detail__desc">{longDescription}</p>
+
+          {
+            product.details && product.details.length > 0 && (
+              <dl class="detail__specs">
+                {product.details.map((item) => (
+                  <div class="detail__spec-row">
+                    <dt>{item.label}</dt>
+                    <dd>{item.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            )
+          }
+
+          {
+            product.soldOut ? (
+              <button class="detail__cta detail__cta--disabled" disabled>
+                Sudah terjual
+              </button>
+            ) : (
+              <a class="detail__cta" href={waLink} target="_blank" rel="noopener noreferrer">
+                Tanya via WhatsApp
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .detail {
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .detail__inner {
+    max-width: 56rem;
+    margin: 0 auto;
+  }
+
+  .detail__back {
+    display: inline-block;
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+  }
+
+  .detail__back:hover {
+    color: var(--ink);
+  }
+
+  .detail__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+  }
+
+  @media (max-width: 720px) {
+    .detail__grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  .detail__photo-wrap {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    background: var(--line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .detail__photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .detail__sold-badge {
+    position: absolute;
+    inset: 0;
+    background: rgba(28, 27, 25, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .detail__sold-badge span {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: #fff;
+    background: var(--sold);
+    padding: 0.4rem 1.3rem;
+    border-radius: 2px;
+    transform: rotate(-6deg);
+  }
+
+  .detail__thumbs {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 0.75rem;
+  }
+
+  .detail__thumb {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+    border-radius: 3px;
+    border: 1px solid var(--line);
+  }
+
+  .detail__condition {
+    font-family: var(--font-ui);
+    margin: 0;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--tan-deep);
+    font-weight: 600;
+  }
+
+  .detail__name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.9rem;
+    line-height: 1.25;
+    margin: 0.35rem 0 0.5rem;
+    color: var(--ink);
+  }
+
+  .detail__price {
+    font-family: var(--font-ui);
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin: 0 0 1.2rem;
+    color: var(--ink);
+  }
+
+  .detail__desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+    margin: 0 0 1.5rem;
+  }
+
+  .detail__specs {
+    margin: 0 0 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .detail__spec-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid var(--line);
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+  }
+
+  .detail__spec-row dt {
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .detail__spec-row dd {
+    margin: 0;
+    color: var(--ink);
+    font-weight: 500;
+    text-align: right;
+  }
+
+  .detail__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.85rem 1.2rem;
+    background: var(--ink);
+    color: var(--paper);
+    text-decoration: none;
+    font-family: var(--font-ui);
+    font-size: 0.95rem;
+    font-weight: 500;
+    border-radius: 3px;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s ease;
+  }
+
+  .detail__cta:hover {
+    background: var(--tan-deep);
+  }
+
+  .detail__cta--disabled {
+    background: var(--line);
+    color: var(--ink-soft);
+    cursor: not-allowed;
+  }
+
+  .detail__cta--disabled:hover {
+    background: var(--line);
+  }
+</style>

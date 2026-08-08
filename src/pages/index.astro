@@ -1,0 +1,72 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProductCard from "../components/ProductCard.astro";
+import { products } from "../data/products.js";
+
+const available = products.filter((p) => !p.soldOut);
+const sold = products.filter((p) => p.soldOut);
+const sortedProducts = [...available, ...sold];
+---
+
+<BaseLayout>
+  <main class="shop">
+    <div class="shop__inner">
+      <div class="shop__heading">
+        <h1>Barang yang dijual</h1>
+        <p>{available.length} barang tersedia</p>
+      </div>
+
+      {
+        sortedProducts.length === 0 ? (
+          <p class="shop__empty">Belum ada barang yang dipajang. Cek lagi nanti.</p>
+        ) : (
+          <div class="shop__grid">
+            {sortedProducts.map((product) => (
+              <ProductCard product={product} />
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .shop {
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  .shop__inner {
+    max-width: 68rem;
+    margin: 0 auto;
+  }
+
+  .shop__heading {
+    margin-bottom: 1.8rem;
+  }
+
+  .shop__heading h1 {
+    font-family: var(--font-display);
+    font-size: 1.7rem;
+    font-weight: 600;
+    margin: 0 0 0.3rem;
+  }
+
+  .shop__heading p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 0.92rem;
+    font-family: var(--font-ui);
+  }
+
+  .shop__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .shop__empty {
+    color: var(--ink-soft);
+    padding: 2rem 0;
+  }
+</style>

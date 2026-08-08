@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;1,8..60,400&family=Inter:wght@400;500;600&display=swap");
+
+:root {
+  --paper: #f7f5f0;
+  --paper-raised: #fdfcfa;
+  --ink: #1c1b19;
+  --ink-soft: #55524a;
+  --tan: #8b6f52;
+  --tan-deep: #6b5540;
+  --line: #e2ddd0;
+  --sold: #b5472b;
+  --sold-bg: #f4e6e0;
+
+  /* Editorial serif ala Medium: Charter/Georgia-family, bukan display face dekoratif */
+  --font-display: "Source Serif 4", Charter, Georgia, "Times New Roman", serif;
+  --font-body: "Source Serif 4", Charter, Georgia, "Times New Roman", serif;
+  --font-ui: "Inter", -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--tan-deep);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
