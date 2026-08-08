@@ -29,7 +29,7 @@ export const products = [
     details: [
       { label: "Merek", value: "Alcha" },
       { label: "Ukuran", value: "90 X 40 CM" },
-      { label: "Tahun beli", value: "2023" },
+      { label: "Tahun beli", value: "2025" },
       { label: "Kelengkapan", value: "Mousepad, tas kain" },
       { label: "Alasan jual", value: "Upgrade ke deskmat lain" },
     ],
